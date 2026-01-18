@@ -3,7 +3,10 @@ const song = document.querySelector(".song");
 const play = document.querySelector(".play");
 const timeDisplay = document.querySelector(".time-display");
 
-song.preload = "auto";   
+const soundButtons = document.querySelectorAll(".sound-picker button");
+const timeButtons = document.querySelectorAll(".time-select button");
+
+song.preload = "auto";
 
 let fakeDuration = 600;
 let remainingTime = 600;
@@ -33,17 +36,38 @@ function startTimer() {
   }, 1000);
 }
 
-
 play.addEventListener("click", () => {
   if (song.paused) {
+
     song.load();
-    song.play().then(() => {
-      startTimer();
-    }).catch(() => {});
+    song.play().catch(() => {});
+
+    remainingTime--;
+    updateDisplay();
+
+    startTimer();
+
   } else {
     song.pause();
     clearInterval(timer);
   }
 });
 
+// Change sound
+soundButtons.forEach(button => {
+  button.addEventListener("click", function () {
+    song.src = this.getAttribute("data-sound");
+  });
+});
+
+// Change time
+timeButtons.forEach(button => {
+  button.addEventListener("click", function () {
+    fakeDuration = parseInt(this.getAttribute("data-time"));
+    remainingTime = fakeDuration;
+    updateDisplay();
+  });
+});
+
+// Initial display
 updateDisplay();
