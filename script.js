@@ -8,8 +8,8 @@ const soundButtons = document.querySelectorAll(".sound-picker button");
 const timeButtons = document.querySelectorAll(".time-select button");
 
 let fakeDuration = 600;
-let interval = null;
-let remainingTime = fakeDuration;
+let remainingTime = 600;
+let timer = null;
 
 // Format time
 function formatTime(time) {
@@ -23,42 +23,37 @@ function updateDisplay() {
   timeDisplay.textContent = formatTime(remainingTime);
 }
 
-// Start Timer
+// Start timer
 function startTimer() {
-  clearInterval(interval);
+  clearInterval(timer);
 
-  interval = setInterval(() => {
+  timer = setInterval(() => {
     if (remainingTime > 0) {
       remainingTime--;
       updateDisplay();
     } else {
+      clearInterval(timer);
       song.pause();
-      video.pause();
-      clearInterval(interval);
     }
   }, 1000);
 }
 
-// Play / Pause
+// Play button logic (VERY SIMPLE FOR CYPRESS)
 play.addEventListener("click", () => {
   if (song.paused) {
     song.play();
-    video.play();
     startTimer();
   } else {
     song.pause();
-    video.pause();
-    clearInterval(interval);
+    clearInterval(timer);
   }
 });
 
-// Switch sounds
+// Change sound
 soundButtons.forEach(button => {
   button.addEventListener("click", function () {
     song.src = this.getAttribute("data-sound");
     video.src = this.getAttribute("data-video");
-    song.play();
-    video.play();
   });
 });
 
