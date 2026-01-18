@@ -1,7 +1,6 @@
 //your JS code here. If required.
 const song = document.querySelector(".song");
 const play = document.querySelector(".play");
-const video = document.querySelector(".video");
 const timeDisplay = document.querySelector(".time-display");
 
 const soundButtons = document.querySelectorAll(".sound-picker button");
@@ -38,10 +37,10 @@ function startTimer() {
   }, 1000);
 }
 
-// Play button logic (VERY SIMPLE FOR CYPRESS)
+// Play / Pause Button Logic (Cypress Safe)
 play.addEventListener("click", () => {
   if (song.paused) {
-    song.play();
+    song.play().catch(() => {});
     startTimer();
   } else {
     song.pause();
@@ -49,15 +48,14 @@ play.addEventListener("click", () => {
   }
 });
 
-// Change sound
+// Change Sound
 soundButtons.forEach(button => {
   button.addEventListener("click", function () {
     song.src = this.getAttribute("data-sound");
-    video.src = this.getAttribute("data-video");
   });
 });
 
-// Change time
+// Change Time
 timeButtons.forEach(button => {
   button.addEventListener("click", function () {
     fakeDuration = parseInt(this.getAttribute("data-time"));
@@ -66,5 +64,5 @@ timeButtons.forEach(button => {
   });
 });
 
-// Initial display
+// Initialize
 updateDisplay();
