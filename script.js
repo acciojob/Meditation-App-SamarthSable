@@ -3,23 +3,56 @@ const song = document.querySelector(".song");
 const play = document.querySelector(".play");
 const video = document.querySelector(".video");
 const timeDisplay = document.querySelector(".time-display");
+
 const soundButtons = document.querySelectorAll(".sound-picker button");
-const timeButtons = document.querySelectorAll("#time-select button");
+const timeButtons = document.querySelectorAll(".time-select button");
 
 let fakeDuration = 600;
+let interval = null;
+let remainingTime = fakeDuration;
+
+// Format time
+function formatTime(time) {
+  let minutes = Math.floor(time / 60);
+  let seconds = Math.floor(time % 60);
+  return `${minutes}:${seconds}`;
+}
+
+// Update display
+function updateDisplay() {
+  timeDisplay.textContent = formatTime(remainingTime);
+}
+
+// Start Timer
+function startTimer() {
+  clearInterval(interval);
+
+  interval = setInterval(() => {
+    if (remainingTime > 0) {
+      remainingTime--;
+      updateDisplay();
+    } else {
+      song.pause();
+      video.pause();
+      clearInterval(interval);
+    }
+  }, 1000);
+}
 
 // Play / Pause
 play.addEventListener("click", () => {
   if (song.paused) {
     song.play();
     video.play();
+    startTimer();
   } else {
     song.pause();
     video.pause();
+    clearInterval(interval);
   }
 });
 
-// Switch Sound & Video
+// Switch sounds
 soundButtons.forEach(button => {
   button.addEventListener("click", function () {
     song.src = this.getAttribute("data-sound");
@@ -29,30 +62,14 @@ soundButtons.forEach(button => {
   });
 });
 
-// Change Time
+// Change time
 timeButtons.forEach(button => {
   button.addEventListener("click", function () {
-    fakeDuration = this.getAttribute("data-time");
-    timeDisplay.textContent = formatTime(fakeDuration);
+    fakeDuration = parseInt(this.getAttribute("data-time"));
+    remainingTime = fakeDuration;
+    updateDisplay();
   });
 });
 
-// Update Timer
-song.ontimeupdate = function () {
-  let currentTime = song.currentTime;
-  let elapsed = fakeDuration - currentTime;
-
-  timeDisplay.textContent = formatTime(elapsed);
-
-  if (currentTime >= fakeDuration) {
-    song.pause();
-    song.currentTime = 0;
-  }
-};
-
-// Format Time
-function formatTime(time) {
-  let minutes = Math.floor(time / 60);
-  let seconds = Math.floor(time % 60);
-  return `${minutes}:${seconds}`;
-}
+// Initial display
+updateDisplay();

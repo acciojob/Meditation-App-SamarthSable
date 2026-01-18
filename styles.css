@@ -2,29 +2,34 @@
 body {
   margin: 0;
   padding: 0;
-  background: black;
+  background: #000;
   color: white;
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   text-align: center;
 }
 
-#app {
+.app {
   position: relative;
   height: 100vh;
 }
 
-/* Full Screen Video */
-.vid-container video {
+/* Video Background */
+.vid-container {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   z-index: -1;
+}
+
+.vid-container video {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
-/* Center Player */
+/* Player Section */
 .player-container {
   position: absolute;
   top: 40%;
@@ -32,52 +37,45 @@ body {
   transform: translate(-50%, -50%);
 }
 
-/* Play Button Image */
+/* Play Button */
 .play {
-  width: 100px;
+  padding: 10px 20px;
+  font-size: 18px;
   cursor: pointer;
 }
 
-/* Timer */
+/* Timer Display */
 .time-display {
-  font-size: 28px;
   margin-top: 10px;
+  font-size: 26px;
 }
 
-/* Sound Picker - Right Side */
+/* Sound Picker */
 .sound-picker {
   position: absolute;
-  right: 50px;
+  right: 40px;
   top: 30%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
 }
 
-/* Time Buttons - Left Side */
-#time-select {
-  position: absolute;
-  left: 50px;
-  top: 30%;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* Circular Buttons */
-.sound-picker button,
-#time-select button {
-  background: none;
-  border: none;
-  border-radius: 50%;
-  padding: 0;
+.sound-picker button {
+  padding: 10px 15px;
   cursor: pointer;
 }
 
-/* Circular Images */
-.sound-picker img,
-#time-select img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
+/* Time Select */
+.time-select {
+  position: absolute;
+  left: 40px;
+  top: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.time-select button {
+  padding: 10px 15px;
+  cursor: pointer;
 }
